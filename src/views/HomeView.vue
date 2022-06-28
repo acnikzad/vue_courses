@@ -2,20 +2,25 @@
   <div class="home">
     <div class="row">
       <label for="courses">Choose a Course: </label>
-      <select id="courses" name="courses">
-          <option v-for="course in courses">{{course.name}}</option>
+      <select id="courses" @change="selectCourse($event)" name="courses">
+          <option v-for="course in courses" :value="course.id">{{course.name}}</option>
       </select>
       <label for="students">Choose a Student: </label>
       <select id="students" name="students">
-          <option v-for="student in students" :value= "student.id">{{student.first_name}} {{student.last_name}}</option>
+          <option v-for="student in students">{{student.first_name}} {{student.last_name}}</option>
       </select>
       <label for="teachers">Choose a Teacher: </label>
       <select id="teachers" name="teachers">
           <option v-for="teacher in teachers">{{teacher.first_name}} {{teacher.last_name}}</option>
       </select>
     </div>
-    <div class="row">
-
+    <h5>Teacher(s)</h5>
+    <div v-for="teacher in teachers">
+      <p>{{teacher.first_name}} {{teacher.last_name}}</p>
+    </div>
+    <h5>Students</h5>
+    <div v-for="student in students">
+      <p>{{student.first_name}} {{student.last_name}}</p>
     </div>
   </div>
 </template>
@@ -50,6 +55,35 @@ export default {
   },
 
   methods: {
+
+    selectCourse: function(theCourse) {
+      console.log('selecting the course...', theCourse.target.value);
+      if (theCourse.target.value) {
+        const id = parseInt(theCourse.target.value, 10);
+        axios.get(`/api/courses/${id}`).then(response => {
+          console.log('course details ...', response.data);
+          if (response.data) {
+            this.currentCourse = response.data;
+            if (response.data.students && response.data.students.length) {
+              this.students = response.data.students;
+            }
+            if (response.data.teachers && response.data.teachers.length) {
+              this.teachers = response.data.teachers;
+            }
+          }
+        });
+      }
+    },
+
+    toggleCourse: function(theCourse) {
+      console.log(theCourse);
+      if (this.currentCourse === theCourse) {
+        this.currentCourse = null;
+      } else {
+        this.currentCourse = theCourse;
+      }
+      console.log('in toggle info...');
+    },
 
   }
 }
