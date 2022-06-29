@@ -6,8 +6,8 @@
           <option v-for="course in courses" :value="course.id">{{course.name}}</option>
       </select>
       <label for="students">Choose a Student: </label>
-      <select id="students" name="students">
-          <option v-for="student in students">{{student.first_name}} {{student.last_name}}</option>
+      <select id="students" @change="selectStudent($event)" name="students">
+          <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
       </select>
       <label for="teachers">Choose a Teacher: </label>
       <select id="teachers" name="teachers">
@@ -15,12 +15,20 @@
       </select>
     </div>
     <h5>Teacher(s)</h5>
-    <div v-for="teacher in teachers">
+    <div v-for="teacher in courses_teachers">
       <p>{{teacher.first_name}} {{teacher.last_name}}</p>
     </div>
     <h5>Students</h5>
-    <div v-for="student in students">
+    <div v-for="student in courses_students">
       <p>{{student.first_name}} {{student.last_name}}</p>
+    </div>
+    <h5>Courses</h5>
+    <div v-for="course in students_courses">
+      <p>{{course.name}}</p>
+    </div>
+    <h5>Teachers</h5>
+    <div v-for="teacher in teacher_courses">
+      <p>{{teacher.first_name}} {{teacher.last_name}}</p>
     </div>
   </div>
 </template>
@@ -35,6 +43,13 @@ export default {
       courses: [],
       students: [],
       teachers: [],
+      courses_students: [],
+      courses_teachers: [],
+      teacher_courses: [],
+      teacher_students: [],
+      students_courses: [],
+      students_teachers: [],
+
       currentCourse: {},
       currentStudent: {},
       currentTeacher: {},
@@ -65,10 +80,29 @@ export default {
           if (response.data) {
             this.currentCourse = response.data;
             if (response.data.students && response.data.students.length) {
-              this.students = response.data.students;
+              this.courses_students = response.data.students;
             }
             if (response.data.teachers && response.data.teachers.length) {
-              this.teachers = response.data.teachers;
+              this.courses_teachers = response.data.teachers;
+            }
+          }
+        });
+      }
+    },
+
+    selectStudent: function(theStudent) {
+      console.log('selecting the student...', theStudent.target.value);
+      if (theStudent.target.value) {
+        const id = parseInt(theStudent.target.value, 10);
+        axios.get(`/api/students/${id}`).then(response => {
+          console.log('student details ...', response.data);
+          if (response.data) {
+            this.currentStudent = response.data;
+            if (response.data.courses && response.data.courses.length) {
+              this.student_courses = response.data.courses;
+            }
+            if (response.data.teachers && response.data.teachers.length) {
+              this.students_teachers = response.data.teachers;
             }
           }
         });
