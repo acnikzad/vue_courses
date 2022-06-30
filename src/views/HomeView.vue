@@ -1,34 +1,69 @@
 <template>
   <div class="home">
-    <div class="row">
-      <label for="courses">List of Courses: </label>
-      <select id="courses" @change="selectCourse($event)" name="courses" >
-        <option value="" disabled selected>Select Course</option>
-        <option v-for="course in courses" :value="course.id">{{course.name}}</option>
-      </select>
-      <label for="students">List of Students: </label>
-      <select id="students" @change="selectStudent($event)" name="students">
-        <option value="" disabled selected>Select Student</option>
-        <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
-      </select>
-      <label for="teachers">List of Teachers: </label>
-      <select id="teachers" @change="selectTeacher($event)" name="teachers">
-        <option value="" disabled selected>Select Teacher</option>
-        <option v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
-      </select>
-    </div>
-    <h5>Teacher(s)</h5>
-    <div v-for="teacher in courses_teachers">
-      <p>{{teacher.first_name}} {{teacher.last_name}}</p>
-    </div>
-    <h5>Students</h5>
-    <div v-for="student in courses_students">
-      <p>{{student.first_name}} {{student.last_name}}</p>
-    </div>
-    <h5>Courses</h5>
-    <div v-for="course in students_courses">
-      <p>{{course.name}}</p>
-    </div>
+    <!-- Courses section-->
+        <section class="bg-light py-5 border-bottom">
+          <div class="container px-5 my-5">
+            <div class="container px-5 my-5">
+                <div class="row gx-5">
+                    <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
+                      <label for="courses">List of Courses: </label>
+                      <select id="courses" @change="selectCourse($event)" name="courses" >
+                        <option value="" disabled selected>Select Course</option>
+                        <option v-for="course in courses" :value="course.id">{{course.name}}</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
+                      <label for="students">List of Students: </label>
+                      <select id="students" @change="selectStudent($event)" name="students">
+                        <option value="" disabled selected>Select Student</option>
+                        <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
+                      <label for="teachers">List of Teachers: </label>
+                      <select id="teachers" @change="selectTeacher($event)" name="teachers">
+                        <option value="" disabled selected>Select Teacher</option>
+                        <option v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5 justify-content-center">
+              <!-- Pricing card free-->
+              <div class="col-lg-6 col-xl-4">
+                <div class="card mb-5 mb-xl-0">
+                  <div class="card-body p-5">
+                    <div class="large text-uppercase fw-bold text-muted">Courses</div>
+                    <div v-for="course in students_courses">
+                      <p>{{course.name}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-4">
+                <div class="card mb-5 mb-xl-0">
+                  <div class="card-body p-5">
+                    <div class="small text-uppercase fw-bold text-muted">Students</div>
+                    <div v-for="student in courses_students">
+                      <p>{{student.first_name}} {{student.last_name}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-4">
+                <div class="card mb-5 mb-xl-0">
+                  <div class="card-body p-5">
+                    <div class="small text-uppercase fw-bold text-muted">Teachers</div>
+                      <div v-for="teacher in courses_teachers">
+                        <p>{{teacher.first_name}} {{teacher.last_name}}</p>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
   </div>
 </template>
 
