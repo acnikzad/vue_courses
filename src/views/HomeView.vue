@@ -1,17 +1,20 @@
 <template>
   <div class="home">
     <div class="row">
-      <label for="courses">Choose a Course: </label>
-      <select id="courses" @change="selectCourse($event)" name="courses">
-          <option v-for="course in courses" :value="course.id">{{course.name}}</option>
+      <label for="courses">List of Courses: </label>
+      <select id="courses" @change="selectCourse($event)" name="courses" >
+        <option value="" disabled selected>Select Course</option>
+        <option v-for="course in courses" :value="course.id">{{course.name}}</option>
       </select>
-      <label for="students">Choose a Student: </label>
+      <label for="students">List of Students: </label>
       <select id="students" @change="selectStudent($event)" name="students">
-          <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
+        <option value="" disabled selected>Select Student</option>
+        <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
       </select>
-      <label for="teachers">Choose a Teacher: </label>
-      <select id="teachers" name="teachers">
-          <option v-for="teacher in teachers">{{teacher.first_name}} {{teacher.last_name}}</option>
+      <label for="teachers">List of Teachers: </label>
+      <select id="teachers" @change="selectTeacher($event)" name="teachers">
+        <option value="" disabled selected>Select Teacher</option>
+        <option v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
       </select>
     </div>
     <h5>Teacher(s)</h5>
@@ -25,10 +28,6 @@
     <h5>Courses</h5>
     <div v-for="course in students_courses">
       <p>{{course.name}}</p>
-    </div>
-    <h5>Teachers</h5>
-    <div v-for="teacher in teacher_courses">
-      <p>{{teacher.first_name}} {{teacher.last_name}}</p>
     </div>
   </div>
 </template>
@@ -78,6 +77,7 @@ export default {
         axios.get(`/api/courses/${id}`).then(response => {
           console.log('course details ...', response.data);
           if (response.data) {
+            this.students_courses = [];
             this.currentCourse = response.data;
             if (response.data.students && response.data.students.length) {
               this.courses_students = response.data.students;
@@ -97,13 +97,31 @@ export default {
         axios.get(`/api/students/${id}`).then(response => {
           console.log('student details ...', response.data);
           if (response.data) {
+            this.courses_teachers = [];
+            this.courses_students = [];
             this.currentStudent = response.data;
             if (response.data.courses && response.data.courses.length) {
-              this.student_courses = response.data.courses;
+              this.students_courses = response.data.courses;
             }
-            if (response.data.teachers && response.data.teachers.length) {
-              this.students_teachers = response.data.teachers;
+          }
+        });
+      }
+    },
+
+    selectTeacher: function(theTeacher) {
+      console.log('selecting the teacher...', theTeacher.target.value);
+      if (theTeacher.target.value) {
+        const id = parseInt(theTeacher.target.value, 10);
+        axios.get(`/api/teachers/${id}`).then(response => {
+          console.log('teacher details ...', response.data);
+          if (response.data) {
+            this.courses_students = [];
+            this.courses_teachers = [];
+            this.currentTeacher = response.data;
+            if (response.data.courses && response.data.courses.length) {
+              this.students_courses = response.data.courses;
             }
+
           }
         });
       }
