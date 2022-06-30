@@ -1,6 +1,69 @@
 <template>
   <div class="home">
     <!-- Courses section-->
+    <section class="py-3 border-bottom" id="features">
+            <div class="container px-5 my-5">
+                <div class="row gx-5">
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                      <div class="text-center mb-5">
+                        <h2 class="fw-bolder">Add Student</h2>
+                      </div>
+                        <form id="studentForm">
+                            <!-- Name input-->
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" v-model="newStudentFirstName"/>
+                                <label for="name">First Name</label>
+                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                            </div>
+                            <!-- Email address input-->
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="email" type="text" placeholder="name@example.com" data-sb-validations="required" v-model="newStudentLastName"/>
+                                <label for="email">Last Name</label>
+                            </div>
+                            <!-- Submit Button-->
+                            <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createStudent()">Submit</button></div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                      <div class="text-center mb-5">
+                        <h2 class="fw-bolder">Add Teacher</h2>
+                      </div>
+                        <form id="teacherForm">
+                            <!-- Name input-->
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" v-model="newTeacherFirstName"/>
+                                <label for="name">First Name</label>
+                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                            </div>
+                            <!-- Email address input-->
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="email" type="text" placeholder="name@example.com" data-sb-validations="required" v-model="newTeacherLastName"/>
+                                <label for="email">Last Name</label>
+                            </div>
+                            <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createTeacher()">Submit</button></div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-center mb-5">
+                          <h2 class="fw-bolder">Assign Classes</h2>
+                        </div>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                          <option selected>Open this select menu</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                          <option selected>Open this select menu</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createStudent()">Submit</button></div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <section class="bg-light py-5 border-bottom">
           <div class="container px-5 my-5">
             <div class="container px-5 my-5">
@@ -29,7 +92,6 @@
                 </div>
             </div>
             <div class="row gx-5 justify-content-center">
-              <!-- Pricing card free-->
               <div class="col-lg-6 col-xl-4">
                 <div class="card mb-5 mb-xl-0">
                   <div class="card-body p-5">
@@ -43,7 +105,7 @@
               <div class="col-lg-6 col-xl-4">
                 <div class="card mb-5 mb-xl-0">
                   <div class="card-body p-5">
-                    <div class="small text-uppercase fw-bold text-muted">Students</div>
+                    <div class="large text-uppercase fw-bold text-muted">Students</div>
                     <div v-for="student in courses_students">
                       <p>{{student.first_name}} {{student.last_name}}</p>
                     </div>
@@ -53,14 +115,13 @@
               <div class="col-lg-6 col-xl-4">
                 <div class="card mb-5 mb-xl-0">
                   <div class="card-body p-5">
-                    <div class="small text-uppercase fw-bold text-muted">Teachers</div>
+                    <div class="large text-uppercase fw-bold text-muted">Teachers</div>
                       <div v-for="teacher in courses_teachers">
                         <p>{{teacher.first_name}} {{teacher.last_name}}</p>
                       </div>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </section>
@@ -83,6 +144,7 @@ export default {
       teacher_students: [],
       students_courses: [],
       students_teachers: [],
+      selected_student: [],
 
       currentCourse: {},
       currentStudent: {},
@@ -112,7 +174,6 @@ export default {
         axios.get(`/api/courses/${id}`).then(response => {
           console.log('course details ...', response.data);
           if (response.data) {
-            this.students_courses = [];
             this.currentCourse = response.data;
             if (response.data.students && response.data.students.length) {
               this.courses_students = response.data.students;
@@ -137,6 +198,11 @@ export default {
             this.currentStudent = response.data;
             if (response.data.courses && response.data.courses.length) {
               this.students_courses = response.data.courses;
+              // this.courses_students = response.data.students;
+            }
+            if (response.data.students && response.data.students.length) {
+              this.courses_students = response.data.students;
+              // this.courses_students = response.data.students;
             }
           }
         });
@@ -162,16 +228,31 @@ export default {
       }
     },
 
-    toggleCourse: function(theCourse) {
-      console.log(theCourse);
-      if (this.currentCourse === theCourse) {
-        this.currentCourse = null;
-      } else {
-        this.currentCourse = theCourse;
-      }
-      console.log('in toggle info...');
+    createStudent: function() {
+      console.log("creating student...")
+      let params = {
+            first_name: this.newStudentFirstName,
+            last_name: this.newStudentLastName
+      };
+      axios.post("/api/students", params).then(response => {
+        this.students.push(response.data);
+        this.newStudentFirstName = "";
+        this.newStudentLastName = "";
+      })
     },
 
+    createTeacher: function() {
+      console.log("creating teacher...")
+      let params = {
+            first_name: this.newTeacherFirstName,
+            last_name: this.newTeacherLastName
+      };
+      axios.post("/api/teachers", params).then(response => {
+        this.teachers.push(response.data);
+        this.newTeacherFirstName = "";
+        this.newTeacherLastName = "";
+      })
+    }
   }
 }
 </script>

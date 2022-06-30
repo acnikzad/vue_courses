@@ -14,7 +14,7 @@
 
   <router-view/>
   <footer class="py-4 bg-dark">
-    <div class="container px-5"><p class="m-0 text-center text-white">College Courses Project 2022</p></div>
+    <div class="container px-5"><p class="m-0 text-center text-white">College Courses Project - Aria Nikzad - 2022</p></div>
   </footer>
 </template>
 
