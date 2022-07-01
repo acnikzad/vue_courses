@@ -48,16 +48,12 @@
                           <h2 class="fw-bolder">Assign Classes</h2>
                         </div>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                          <option selected>Open this select menu</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <option value="" disabled selected>Select Student</option>
+                          <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
                         </select>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                          <option selected>Open this select menu</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <option value="" disabled selected>Select Course</option>
+                          <option v-for="course in courses" :value="course.id">{{course.name}}</option>
                         </select>
                         <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createStudent()">Submit</button></div>
                     </div>
@@ -69,22 +65,28 @@
             <div class="container px-5 my-5">
                 <div class="row gx-5">
                     <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
-                      <label for="courses">List of Courses: </label>
-                      <select id="courses" @change="selectCourse($event)" name="courses" >
+                      <div class="text-center mb-5">
+                        <h4 class="fw-bolder">Select Class for Enrollment</h4>
+                      </div>
+                      <select id="courses" @change="selectCourse($event)" name="courses" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                         <option value="" disabled selected>Select Course</option>
                         <option v-for="course in courses" :value="course.id">{{course.name}}</option>
                       </select>
                     </div>
                     <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
-                      <label for="students">List of Students: </label>
-                      <select id="students" @change="selectStudent($event)" name="students">
+                      <div class="text-center mb-5">
+                        <h4 class="fw-bolder">Select Student for Assigned Classes</h4>
+                      </div>
+                      <select id="students" @change="selectStudent($event)" name="students" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                         <option value="" disabled selected>Select Student</option>
                         <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
                       </select>
                     </div>
                     <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
-                      <label for="teachers">List of Teachers: </label>
-                      <select id="teachers" @change="selectTeacher($event)" name="teachers">
+                      <div class="text-center mb-5">
+                        <h4 class="fw-bolder">Select Teacher for Assigned Classes</h4>
+                      </div>
+                      <select id="teachers" @change="selectTeacher($event)" name="teachers" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                         <option value="" disabled selected>Select Teacher</option>
                         <option v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
                       </select>
@@ -174,6 +176,8 @@ export default {
         axios.get(`/api/courses/${id}`).then(response => {
           console.log('course details ...', response.data);
           if (response.data) {
+            this.courses_teachers = [];
+            this.students_courses = [];
             this.currentCourse = response.data;
             if (response.data.students && response.data.students.length) {
               this.courses_students = response.data.students;
@@ -193,8 +197,9 @@ export default {
         axios.get(`/api/students/${id}`).then(response => {
           console.log('student details ...', response.data);
           if (response.data) {
-            this.courses_teachers = [];
+            this.students_courses = [];
             this.courses_students = [];
+            this.courses_teachers = [];
             this.currentStudent = response.data;
             if (response.data.courses && response.data.courses.length) {
               this.students_courses = response.data.courses;
