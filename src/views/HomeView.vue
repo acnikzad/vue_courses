@@ -55,7 +55,7 @@
                           <option value="" disabled selected>Select Course</option>
                           <option v-for="course in courses" :value="course.id">{{course.name}}</option>
                         </select>
-                        <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createStudent()">Submit</button></div>
+                        <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="assignStudent()">Submit</button></div>
                     </div>
                 </div>
             </div>
@@ -257,6 +257,11 @@ export default {
         this.newTeacherFirstName = "";
         this.newTeacherLastName = "";
       })
+    },
+
+    assignStudent: function(theStudent, theCourse) {
+      console.log('selecting the student...', theStudent.target.value, theCourse.target.value);
+
     }
   }
 }
