@@ -4,7 +4,7 @@
     <section class="py-3 border-bottom" id="features">
             <div class="container px-5 my-5">
                 <div class="row gx-5">
-                    <div class="col-lg-4 mb-5 mb-lg-0">
+                    <div class="col-lg-3 mb-5 mb-lg-0">
                       <div class="text-center mb-5">
                         <h2 class="fw-bolder">Add Student</h2>
                       </div>
@@ -24,7 +24,7 @@
                             <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createStudent()">Submit</button></div>
                         </form>
                     </div>
-                    <div class="col-lg-4 mb-5 mb-lg-0">
+                    <div class="col-lg-3 mb-5 mb-lg-0">
                       <div class="text-center mb-5">
                         <h2 class="fw-bolder">Add Teacher</h2>
                       </div>
@@ -43,9 +43,9 @@
                             <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createTeacher()">Submit</button></div>
                         </form>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3 mb-5 mb-lg-0">
                         <div class="text-center mb-5">
-                          <h2 class="fw-bolder">Assign Classes</h2>
+                          <h2 class="fw-bolder">Assign Classes to Students</h2>
                         </div>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                           <option value="" disabled selected>Select Student</option>
@@ -56,6 +56,23 @@
                           <option v-for="course in courses" :value="course.id">{{course.name}}</option>
                         </select>
                         <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="assignStudent()">Submit</button></div>
+                    </div>
+                    <div class="col-lg-3 mb-5 mb-lg-0">
+                        <div class="text-center mb-5">
+                          <h2 class="fw-bolder">Assign Classes to Teachers</h2>
+                        </div>
+                        <form>
+                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <option value="" disabled selected>Select Teacher</option>
+                            <option v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
+                          </select>
+                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <option value="" disabled selected>Select Course</option>
+                            <option v-for="course in courses" :value="course.id">{{course.name}}</option>
+                          </select>
+                          <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="assignTeacher($event)">Submit</button>
+                        </div>
+                      </form>
                     </div>
                 </div>
             </div>
@@ -259,10 +276,32 @@ export default {
       })
     },
 
-    assignStudent: function(theStudent, theCourse) {
-      console.log('selecting the student...', theStudent.target.value, theCourse.target.value);
+    // assignStudent: function(theStudent, theCourse) {
+    //   console.log('selecting the student...', theStudent.target.value);
+    //   if (theStudent.target.value) {
+    //     const id = parseInt(theStudent.target.value, 10);
+    //     axios.get(`/api/students/${id}`).then(response => {
+    //       console.log('student details ...', response.data);
+    //       if (response.data) {
+    //         this.currentStudent = response.data;
+    //         if (response.data.courses && response.data.courses.length) {
+    //           this.students_courses = response.data.courses;
+    //           // this.courses_students = response.data.students;
+    //         }
+    //         if (response.data.students && response.data.students.length) {
+    //           this.courses_students = response.data.students;
+    //           // this.courses_students = response.data.students;
+    //         }
+    //       }
+    //     });
+    //   }
 
-    }
+    // },
+
+    // assignTeacher: function(theTeacher, theCourse) {
+    //   console.log('selecting the teacher...', theTeacher.target.value, theCourse.target.value);
+
+    // }
   }
 }
 </script>
