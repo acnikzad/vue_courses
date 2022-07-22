@@ -156,27 +156,29 @@
             <div class="container px-5 my-5">
                 <div class="row gx-5">
 <!-- Remove Student -->
-                    <div class="col-lg-6 mb-5 mb-lg-0">
-                        <div class="text-center mb-5">
-                          <h2 class="fw-bolder">Remove Student</h2>
-                        </div>
+                    <div class="col-lg-3 mb-5 mb-lg-0">
+                      <div class="text-center mb-5">
+                        <h2 class="fw-bolder">Remove Student</h2>
+                      </div>
+                      <form>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" @change="destroyStudent($event)">
                           <option value="" disabled selected>Select Student</option>
                           <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
                         </select>
-                        <!-- <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="destroyStudent($event)">Remove</button></div> -->
+                        <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="destroyStudent($event)">Remove</button></div>
+                      </form>
                     </div>
 <!-- Remove Teacher -->
-                    <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="col-lg-3 mb-5 mb-lg-0">
                         <div class="text-center mb-5">
                           <h2 class="fw-bolder">Remove Teacher</h2>
                         </div>
-                        <form name="assignTeacher" onsubmit="assignTeacher()">
-                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                        <form name="removeTeacher" @submit.prevent="removeTeacher">
+                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeTeacherID">
                             <option value="" disabled selected>Select Teacher</option>
                             <option id="theTeacher" v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
                           </select>
-                          <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="destroyTeacher($event)" value="Submit">Remove</button>
+                          <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="removeTeacher($event)" value="Submit">Remove</button>
                         </div>
                       </form>
                     </div>
@@ -208,6 +210,9 @@ export default {
       studentID: "",
       studentcourseID: "",
       teachercourseID: "",
+
+      teacherRemove: "",
+      studentRemove: "",
 
       currentCourse: {},
       currentStudent: {},
@@ -326,6 +331,10 @@ export default {
       event.preventDefault();
       const {studentID, studentcourseID } = this;
       console.log('assigning the student...', studentID, studentcourseID);
+      const params = { course_id: studentcourseID }
+      axios.post(`/api/students/${studentID}`, params).then(response => {
+        console.log('success!')
+      })
     },
 
     assignTeacher: function(event) {
@@ -334,17 +343,22 @@ export default {
       console.log('assigning the teacher...', teacherID, teachercourseID);
     },
 
-    destroyStudent: function(student) {
-      console.log(student.target.value)
-      axios.delete("/api/students/" + student.target.value).then(response => {
-        let index = this.students.indexOf(student.target.value);
-        this.students.splice(index, 1);
+    // destroyStudent: function(student) {
+    //   console.log(student.target.value)
+    //   axios.delete("/api/students/" + student.target.value).then(response => {
+    //     let index = this.students.indexOf(student.target.value);
+    //     this.students.splice(index, 1);
+    //   })
+
+    // },
+
+    removeTeacher: function(event) {
+      event.preventDefault();
+      const {removeTeacherID} = this;
+      console.log('removing teacher...', removeTeacherID);
+      axios.delete("/api/teachers/" + removeTeacherID).then(response => {
+        this.teachers = this.teachers.filter((teacher)=> { return teacher.id !== removeTeacherID })
       })
-
-    },
-
-    destroyTeacher: function() {
-
     }
   }
 }
