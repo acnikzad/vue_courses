@@ -160,12 +160,12 @@
                       <div class="text-center mb-5">
                         <h2 class="fw-bolder">Remove Student</h2>
                       </div>
-                      <form>
-                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" @change="destroyStudent($event)">
+                      <form ame="removeStudent" @submit.prevent="removeStudent">
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeStudentID">
                           <option value="" disabled selected>Select Student</option>
-                          <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
+                          <option id="theStudent" v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
                         </select>
-                        <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="destroyStudent($event)">Remove</button></div>
+                        <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="removeStudent($event)" value="Submit">Remove</button></div>
                       </form>
                     </div>
 <!-- Remove Teacher -->
@@ -341,16 +341,21 @@ export default {
       event.preventDefault();
       const {teacherID, teachercourseID } = this;
       console.log('assigning the teacher...', teacherID, teachercourseID);
+      const params = { course_id: teachercourseID }
+      axios.post(`/api/teachers/${teacherID}`, params).then(response => {
+        console.log('success!')
+      })
     },
 
-    // destroyStudent: function(student) {
-    //   console.log(student.target.value)
-    //   axios.delete("/api/students/" + student.target.value).then(response => {
-    //     let index = this.students.indexOf(student.target.value);
-    //     this.students.splice(index, 1);
-    //   })
+    removeStudent: function(event) {
+      event.preventDefault();
+      const {removeStudentID} = this;
+      console.log('removing student...', removeStudentID);
+      axios.delete("/api/students/" + removeStudentID).then(response => {
+        this.students = this.students.filter((student)=> { return student.id !== removeStudentID })
+      })
 
-    // },
+    },
 
     removeTeacher: function(event) {
       event.preventDefault();
