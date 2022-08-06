@@ -136,19 +136,6 @@
                           </tr>
                         </tbody>
                       </table>
-
-                  <!--   <table style="width:100%">
-                      <tr >
-                        <th>Class</th>
-                        <th>Grade</th>
-                      </tr>
-                      <tr v-for="course in students_courses">
-                        <td>{{course.name}}</td>
-                      </tr>
-                      <tr v-for="student in students_grades">
-                        <td>{{student.grade}}</td>
-                      </tr>
-                    </table> -->
                   </div>
                 </div>
               </div>
@@ -158,7 +145,7 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th scope="col">Grade</th>
+                          <th scope="col">Grades</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -312,6 +299,8 @@ export default {
             this.currentCourse = response.data;
             if (response.data.students && response.data.students.length) {
               this.courses_students = response.data.students;
+              this.students_grades = response.data.student_courses;
+              console.log("this is the grades", this.students_grades)
             }
             if (response.data.teachers && response.data.teachers.length) {
               this.courses_teachers = response.data.teachers;
@@ -335,9 +324,6 @@ export default {
             this.currentStudent = response.data;
             if (response.data.courses && response.data.courses.length) {
               this.students_courses = response.data.courses;
-              console.log("this is the students", this.students_courses)
-
-              // console.log("this is the response yo", response.data.student_courses)
               this.students_grades = response.data.student_courses;
               console.log("this is the grades", this.students_grades)
 
