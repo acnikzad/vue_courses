@@ -58,7 +58,9 @@
                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="studentcourseID">
                             <option value="" disabled selected>Select Course</option>
                             <option id="theCourse" v-for="course in courses" :value="course.id">{{course.name}}</option>
-                          </select>     
+                          </select> 
+                          <input class="form-control" id="grade" type="number" placeholder="Enter Percentage" v-model="grade" />
+                          <br> 
                           <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="assignStudent()">Submit</button>
                         </div>
                       </form>
@@ -117,35 +119,90 @@
                       </select>
                     </div>
                 </div>
-            </div>
-            <div class="row gx-5 justify-content-center">
-              <div class="col-lg-6 col-xl-4">
-                <div class="card mb-5 mb-xl-0">
-                  <div class="card-body p-5">
-                    <div class="large text-uppercase fw-bold text-muted">Courses</div>
-                    <div v-for="course in students_courses">
-                      <p>{{course.name}}</p>
-                    </div>
+              </div>
+              <div class="row gx-5 justify-content-center">
+                <div class="col-lg-3 col-xl-3">
+                  <div class="card mb-5 mb-xl-0">
+                    <div class="card-body p-5">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Class</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="course in students_courses">
+                            <th scope="row">{{course.name}}</th>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                  <!--   <table style="width:100%">
+                      <tr >
+                        <th>Class</th>
+                        <th>Grade</th>
+                      </tr>
+                      <tr v-for="course in students_courses">
+                        <td>{{course.name}}</td>
+                      </tr>
+                      <tr v-for="student in students_grades">
+                        <td>{{student.grade}}</td>
+                      </tr>
+                    </table> -->
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6 col-xl-4">
+              <div class="col-lg-3 col-xl-3">
                 <div class="card mb-5 mb-xl-0">
                   <div class="card-body p-5">
-                    <div class="large text-uppercase fw-bold text-muted">Students</div>
-                    <div v-for="student in courses_students">
-                      <p>{{student.first_name}} {{student.last_name}}</p>
-                    </div>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="student in students_grades">
+                          <th scope="row">{{student.grade}}</th>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6 col-xl-4">
+              <div class="col-lg-3 col-xl-3">
                 <div class="card mb-5 mb-xl-0">
                   <div class="card-body p-5">
-                    <div class="large text-uppercase fw-bold text-muted">Teachers</div>
-                      <div v-for="teacher in courses_teachers">
-                        <p>{{teacher.first_name}} {{teacher.last_name}}</p>
-                      </div>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Students</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="student in courses_students">
+                          <th scope="row">{{student.first_name}} {{student.last_name}}</th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-xl-3">
+                <div class="card mb-5 mb-xl-0">
+                  <div class="card-body p-5">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Teachers</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="teacher in courses_teachers">
+                          <th scope="row">{{teacher.first_name}} {{teacher.last_name}}</th>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -206,6 +263,8 @@ export default {
       students_teachers: [],
       selected_student: [],
 
+      students_grades: [],
+
       teacherID: "",
       studentID: "",
       studentcourseID: "",
@@ -233,6 +292,9 @@ export default {
     axios.get("/api/teachers").then(response => {
       this.teachers = response.data;
     });
+    // axios.get("/api/student_course").then(response => {
+    //   this.teachers = response.data;
+    // });
   },
 
   methods: {
@@ -246,6 +308,7 @@ export default {
           if (response.data) {
             this.courses_teachers = [];
             this.students_courses = [];
+            this.students_grades = [];
             this.currentCourse = response.data;
             if (response.data.students && response.data.students.length) {
               this.courses_students = response.data.students;
@@ -265,13 +328,19 @@ export default {
         axios.get(`/api/students/${id}`).then(response => {
           console.log('student details ...', response.data);
           if (response.data) {
+            this.students_grades = [];
             this.students_courses = [];
             this.courses_students = [];
             this.courses_teachers = [];
             this.currentStudent = response.data;
             if (response.data.courses && response.data.courses.length) {
               this.students_courses = response.data.courses;
-              // this.courses_students = response.data.students;
+              console.log("this is the students", this.students_courses)
+
+              // console.log("this is the response yo", response.data.student_courses)
+              this.students_grades = response.data.student_courses;
+              console.log("this is the grades", this.students_grades)
+
             }
             if (response.data.students && response.data.students.length) {
               this.courses_students = response.data.students;
@@ -291,6 +360,7 @@ export default {
           if (response.data) {
             this.courses_students = [];
             this.courses_teachers = [];
+            this.students_grades = [];
             this.currentTeacher = response.data;
             if (response.data.courses && response.data.courses.length) {
               this.students_courses = response.data.courses;
@@ -329,11 +399,12 @@ export default {
 
     assignStudent: function(event) {
       event.preventDefault();
-      const {studentID, studentcourseID } = this;
-      console.log('assigning the student...', studentID, studentcourseID);
-      const params = { course_id: studentcourseID }
+      const {studentID, studentcourseID, grade } = this;
+      console.log('assigning the student...', studentID, studentcourseID, grade);
+      const params = { course_id: studentcourseID, grade: grade }
       axios.post(`/api/students/${studentID}`, params).then(response => {
         console.log('success!')
+
       })
     },
 
