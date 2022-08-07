@@ -230,10 +230,12 @@
                         <div class="text-center mb-5">
                           <h2 class="fw-bolder">Upload CSV</h2>
                         </div>
-                        <form>
+                        <form name="uploadFile" @submit.prevent="uploadFile">
                           <div class="form-group">
-                            <input ref="file" v-on:change="handleFileUpload()"  type="file">
+                            <input ref="file" v-on:change="handleFileUpload($event)"  type="file">
                           </div>
+                          <br>
+                          <button class="btn btn-primary btn-lg" v-on:click="submitFile($event)">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -306,7 +308,7 @@ export default {
       currentStudent: {},
       currentTeacher: {},
 
-      csv: null,
+      file: '',
 
     };
   },
@@ -390,7 +392,6 @@ export default {
             if (response.data.courses && response.data.courses.length) {
               this.students_courses = response.data.courses;
             }
-
           }
         });
       }
@@ -460,6 +461,30 @@ export default {
       axios.delete("/api/teachers/" + removeTeacherID).then(response => {
         this.teachers = this.teachers.filter((teacher)=> { return teacher.id !== removeTeacherID })
       })
+    },
+
+    handleFileUpload: function() {
+      event.preventDefault();
+      this.file = this.$refs.file.files[0];
+      console.log("this is the file I am uploading", this.file)
+    },
+
+    submitFile: function () {
+      let formData = new FormData();
+      formData.append('file', this.file);
+      axios.post( '/api/students/import', formData,
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then(function(){
+        console.log('SUCCESS!!');
+      })
+      .catch(function(){
+        console.log('FAILURE!!');
+      });
+
     }
   }
 }
