@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="app" class="home">
     <!-- Courses section-->
     <section class="py-3 border-bottom" id="features">
             <div class="container px-5 my-5">
@@ -59,7 +59,7 @@
                             <option value="" disabled selected>Select Course</option>
                             <option id="theCourse" v-for="course in courses" :value="course.id">{{course.name}}</option>
                           </select> 
-                          <input class="form-control" id="grade" type="number" placeholder="Enter Percentage" v-model="grade" />
+                          <input class="form-control" id="grade" type="number" min="1" max="100" placeholder="Enter Percentage" v-model="grade" />
                           <br> 
                           <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="assignStudent()">Submit</button>
                         </div>
@@ -200,7 +200,7 @@
             <div class="container px-5 my-5">
                 <div class="row gx-5">
 <!-- Remove Student -->
-                    <div class="col-lg-3 mb-5 mb-lg-0">
+                    <div class="col-lg-3 col-xl-3">
                       <div class="text-center mb-5">
                         <h2 class="fw-bolder">Remove Student</h2>
                       </div>
@@ -213,7 +213,7 @@
                       </form>
                     </div>
 <!-- Remove Teacher -->
-                    <div class="col-lg-3 mb-5 mb-lg-0">
+                    <div class="col-lg-3 col-xl-3">
                         <div class="text-center mb-5">
                           <h2 class="fw-bolder">Remove Teacher</h2>
                         </div>
@@ -226,6 +226,16 @@
                         </div>
                       </form>
                     </div>
+                    <div class="col-lg-3 col-xl-3">
+                        <div class="text-center mb-5">
+                          <h2 class="fw-bolder">Upload CSV</h2>
+                        </div>
+                        <form>
+                          <div class="form-group">
+                            <input ref="file" v-on:change="handleFileUpload()"  type="file">
+                          </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
@@ -235,9 +245,41 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import FlatfileButton from "@flatfile/vuejs";
+import { VueCsvImport } from "vue-csv-import";
+import { ref} from "vue";
 
 export default {
+  name:'Add',
+    setup() {
+        const file = ref(null)
+        const handleFileUpload = async() => {
+           // debugger;
+            console.log("selected file",file.value.files)
+            //Upload to server
+        }
+
+        return {
+          handleFileUpload,
+          file
+       }
+    },
+
   data: function() {
+    // licenseKey: 'a78e94bf-cdd5-417a-aa12-4f3f5c6aed0e';
+    // settings: {
+    //   type: 'test import';
+    //   fields: [
+    //     { label: 'Student ID', key: 'student_id' },
+    //     { label: 'Course ID', key: 'course_id' },
+    //     { label: 'Grade', key: 'grade' },
+    //   ]
+    // };
+
+    // customer: {
+    //   userId: '12345',
+    // }
+
     return {
       courses: [],
       students: [],
@@ -264,7 +306,7 @@ export default {
       currentStudent: {},
       currentTeacher: {},
 
-      // event: [],
+      csv: null,
 
     };
   },
@@ -279,9 +321,6 @@ export default {
     axios.get("/api/teachers").then(response => {
       this.teachers = response.data;
     });
-    // axios.get("/api/student_course").then(response => {
-    //   this.teachers = response.data;
-    // });
   },
 
   methods: {

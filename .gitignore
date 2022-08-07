@@ -21,3 +21,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# flatfile secret key
+# uJIzVau5LbUwpzX2med5VMljBW46WKDRoWIfIbq9
