@@ -2,245 +2,243 @@
   <div id="app" class="home">
     <!-- Courses section-->
     <section class="py-3 border-bottom" id="features">
-            <div class="container px-5 my-5">
-                <div class="row gx-5">
-<!-- Add Student -->
-                    <div class="col-lg-3 mb-5 mb-lg-0">
-                      <div class="text-center mb-5">
-                        <h2 class="fw-bolder">Add Student</h2>
-                      </div>
-                        <form id="studentForm">
-                            <!-- Name input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" v-model="newStudentFirstName"/>
-                                <label for="name">First Name</label>
-                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-                            </div>
-                            <!-- Email address input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="email" type="text" placeholder="name@example.com" data-sb-validations="required" v-model="newStudentLastName"/>
-                                <label for="email">Last Name</label>
-                            </div>
-                            <!-- Submit Button-->
-                            <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createStudent()">Submit</button></div>
-                        </form>
-                    </div>
-<!-- Add Teacher -->
-                    <div class="col-lg-3 mb-5 mb-lg-0">
-                      <div class="text-center mb-5">
-                        <h2 class="fw-bolder">Add Teacher</h2>
-                      </div>
-                        <form id="teacherForm">
-                            <!-- Name input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" v-model="newTeacherFirstName"/>
-                                <label for="name">First Name</label>
-                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-                            </div>
-                            <!-- Email address input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="email" type="text" placeholder="name@example.com" data-sb-validations="required" v-model="newTeacherLastName"/>
-                                <label for="email">Last Name</label>
-                            </div>
-                            <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createTeacher()">Submit</button></div>
-                        </form>
-                    </div>
-<!-- Assign Student -->
-                    <div class="col-lg-3 mb-5 mb-lg-0">
-                        <div class="text-center mb-5">
-                          <h2 class="fw-bolder">Assign Classes to Students</h2>
-                        </div>
-                        <form name="assignStudent" @submit.prevent="assignStudent">
-                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="studentID">
-                            <option value="" disabled selected>Select Student</option>
-                            <option id="theStudent" v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
-                          </select>
-                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="studentcourseID">
-                            <option value="" disabled selected>Select Course</option>
-                            <option id="theCourse" v-for="course in courses" :value="course.id">{{course.name}}</option>
-                          </select> 
-                          <input class="form-control" id="grade" type="number" min="1" max="100" placeholder="Enter Percentage" v-model="grade" />
-                          <br> 
-                          <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="assignStudent()">Submit</button>
-                        </div>
-                      </form>
-                    </div>
-<!-- Assign Teacher -->
-                    <div class="col-lg-3 mb-5 mb-lg-0">
-                        <div class="text-center mb-5">
-                          <h2 class="fw-bolder">Assign Classes to Teachers</h2>
-                        </div>
-                        <form name="assignTeacher" @submit.prevent="assignTeacher">
-                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="teacherID">
-                            <option value="" disabled selected>Select Teacher</option>
-                            <option id="theTeacher" v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
-                          </select>
-                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="teachercourseID">
-                            <option value="" disabled selected>Select Course</option>
-                            <option id="theCourse" v-for="course in courses" :value="course.id">{{course.name}}</option>
-                          </select>
-                          <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="assignTeacher()">Submit</button>
-                        </div>
-                      </form>
-                    </div>
-                </div>
+      <div class="container px-5 my-5">
+        <div class="row gx-5">
+  <!-- Add Student -->
+          <div class="col-lg-3 mb-5 mb-lg-0">
+            <div class="text-center mb-5">
+              <h2 class="fw-bolder">Add Student</h2>
             </div>
-        </section>
+            <form id="studentForm">
+              <!-- Name input-->
+              <div class="form-floating mb-3">
+                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" v-model="newStudentFirstName"/>
+                <label for="name">First Name</label>
+                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+              </div>
+              <!-- Email address input-->
+              <div class="form-floating mb-3">
+                <input class="form-control" id="email" type="text" placeholder="name@example.com" data-sb-validations="required" v-model="newStudentLastName"/>
+                <label for="email">Last Name</label>
+              </div>
+              <!-- Submit Button-->
+              <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createStudent()">Submit</button></div>
+            </form>
+          </div>
+<!-- Add Teacher -->
+          <div class="col-lg-3 mb-5 mb-lg-0">
+            <div class="text-center mb-5">
+              <h2 class="fw-bolder">Add Teacher</h2>
+            </div>
+            <form id="teacherForm">
+                <!-- Name input-->
+              <div class="form-floating mb-3">
+                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" v-model="newTeacherFirstName"/>
+                <label for="name">First Name</label>
+                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+              </div>
+              <!-- Email address input-->
+              <div class="form-floating mb-3">
+                <input class="form-control" id="email" type="text" placeholder="name@example.com" data-sb-validations="required" v-model="newTeacherLastName"/>
+                  <label for="email">Last Name</label>
+              </div>
+              <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="createTeacher()">Submit</button></div>
+            </form>
+          </div>
+  <!-- Assign Student -->
+          <div class="col-lg-3 mb-5 mb-lg-0">
+            <div class="text-center mb-5">
+              <h2 class="fw-bolder">Assign Classes to Students</h2>
+            </div>
+              <form name="assignStudent" @submit.prevent="assignStudent">
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="studentID">
+                  <option value="" disabled selected>Select Student</option>
+                  <option id="theStudent" v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
+                </select>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="studentcourseID">
+                  <option value="" disabled selected>Select Course</option>
+                  <option id="theCourse" v-for="course in courses" :value="course.id">{{course.name}}</option>
+                </select> 
+                <input class="form-control" id="grade" type="number" min="1" max="100" placeholder="Enter Percentage" v-model="grade" />
+                <br> 
+                <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="assignStudent()">Submit</button></div>
+              </form>
+            </div>
+  <!-- Assign Teacher -->
+            <div class="col-lg-3 mb-5 mb-lg-0">
+              <div class="text-center mb-5">
+                <h2 class="fw-bolder">Assign Classes to Teachers</h2>
+              </div>
+              <form name="assignTeacher" @submit.prevent="assignTeacher">
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="teacherID">
+                  <option value="" disabled selected>Select Teacher</option>
+                  <option id="theTeacher" v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
+                </select>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="teachercourseID">
+                  <option value="" disabled selected>Select Course</option>
+                  <option id="theCourse" v-for="course in courses" :value="course.id">{{course.name}}</option>
+                </select>
+                <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="assignTeacher()">Submit</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
 <!-- Display -->
-        <section class="bg-light py-5 border-bottom">
+      <section class="bg-light py-5 border-bottom">
+        <div class="container px-5 my-5">
           <div class="container px-5 my-5">
-            <div class="container px-5 my-5">
-                <div class="row gx-5">
-                    <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
-                      <div class="text-center mb-5">
-                        <h4 class="fw-bolder">Select Class for Enrollment</h4>
-                      </div>
-                      <select id="courses" @change="selectCourse($event)" name="courses" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                        <option value="" disabled selected>Select Course</option>
-                        <option v-for="course in courses" :value="course.id">{{course.name}}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
-                      <div class="text-center mb-5">
-                        <h4 class="fw-bolder">Select Student for Assigned Classes</h4>
-                      </div>
-                      <select id="students" @change="selectStudent($event)" name="students" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                        <option value="" disabled selected>Select Student</option>
-                        <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
-                      <div class="text-center mb-5">
-                        <h4 class="fw-bolder">Select Teacher for Assigned Classes</h4>
-                      </div>
-                      <select id="teachers" @change="selectTeacher($event)" name="teachers" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                        <option value="" disabled selected>Select Teacher</option>
-                        <option v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
-                      </select>
-                    </div>
+            <div class="row gx-5">
+              <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
+                <div class="text-center mb-5">
+                  <h4 class="fw-bolder">Select Class for Enrollment</h4>
                 </div>
+                <select id="courses" @change="selectCourse($event)" name="courses" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                  <option value="" disabled selected>Select Course</option>
+                  <option v-for="course in courses" :value="course.id">{{course.name}}</option>
+                </select>
               </div>
-              <div class="row gx-5 justify-content-center">
-                <div class="col-lg-3 col-xl-3">
-                  <div class="card mb-5 mb-xl-0">
-                    <div class="card-body p-5">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Class</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="course in students_courses">
-                            <th scope="row">{{course.name}}</th>
-                          </tr>
-                        </tbody>
-                      </table>
-                  </div>
+              <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
+                <div class="text-center mb-5">
+                  <h4 class="fw-bolder">Select Student for Assigned Classes</h4>
                 </div>
+                <select id="students" @change="selectStudent($event)" name="students" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                  <option value="" disabled selected>Select Student</option>
+                  <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
+                </select>
               </div>
-              <div class="col-lg-3 col-xl-3">
-                <div class="card mb-5 mb-xl-0">
-                  <div class="card-body p-5">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Grades</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="student in students_grades">
-                          <th scope="row">{{student.grade}}</th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+              <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
+                <div class="text-center mb-5">
+                  <h4 class="fw-bolder">Select Teacher for Assigned Classes</h4>
                 </div>
-              </div>
-              <div class="col-lg-3 col-xl-3">
-                <div class="card mb-5 mb-xl-0">
-                  <div class="card-body p-5">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Students</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="student in courses_students">
-                          <th scope="row">{{student.first_name}} {{student.last_name}}</th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-3 col-xl-3">
-                <div class="card mb-5 mb-xl-0">
-                  <div class="card-body p-5">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Teachers</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="teacher in courses_teachers">
-                          <th scope="row">{{teacher.first_name}} {{teacher.last_name}}</th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                <select id="teachers" @change="selectTeacher($event)" name="teachers" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                  <option value="" disabled selected>Select Teacher</option>
+                  <option v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
+                </select>
               </div>
             </div>
           </div>
-        </section>
-        <section class="py-3 border-bottom" id="features">
-            <div class="container px-5 my-5">
-                <div class="row gx-5">
-<!-- Remove Student -->
-                    <div class="col-lg-3 col-xl-3">
-                      <div class="text-center mb-5">
-                        <h2 class="fw-bolder">Remove Student</h2>
-                      </div>
-                      <form ame="removeStudent" @submit.prevent="removeStudent">
-                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeStudentID">
-                          <option value="" disabled selected>Select Student</option>
-                          <option id="theStudent" v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
-                        </select>
-                        <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="removeStudent($event)" value="Submit">Remove</button></div>
-                      </form>
-                    </div>
-<!-- Remove Teacher -->
-                    <div class="col-lg-3 col-xl-3">
-                        <div class="text-center mb-5">
-                          <h2 class="fw-bolder">Remove Teacher</h2>
-                        </div>
-                        <form name="removeTeacher" @submit.prevent="removeTeacher">
-                          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeTeacherID">
-                            <option value="" disabled selected>Select Teacher</option>
-                            <option id="theTeacher" v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
-                          </select>
-                          <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="removeTeacher($event)" value="Submit">Remove</button>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="col-lg-3 col-xl-3">
-                        <div class="text-center mb-5">
-                          <h2 class="fw-bolder">Upload CSV</h2>
-                        </div>
-                        <form name="uploadFile" @submit.prevent="uploadFile">
-                          <div class="form-group">
-                            <input ref="file" v-on:change="handleFileUpload($event)"  type="file">
-                          </div>
-                          <br>
-                          <button class="btn btn-primary btn-lg" v-on:click="submitFile($event)">Submit</button>
-                        </form>
-                    </div>
+          <div class="row gx-5 justify-content-center">
+            <div class="col-lg-3 col-xl-3">
+              <div class="card mb-5 mb-xl-0">
+                <div class="card-body p-5">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Class</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="course in students_courses">
+                        <th scope="row">{{course.name}}</th>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
+              </div>
             </div>
-        </section>
+          <div class="col-lg-3 col-xl-3">
+            <div class="card mb-5 mb-xl-0">
+              <div class="card-body p-5">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Grades</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="student in students_grades">
+                      <th scope="row">{{student.grade}}</th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-xl-3">
+            <div class="card mb-5 mb-xl-0">
+              <div class="card-body p-5">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Students</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="student in courses_students">
+                      <th scope="row">{{student.first_name}} {{student.last_name}}</th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-xl-3">
+            <div class="card mb-5 mb-xl-0">
+              <div class="card-body p-5">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Teachers</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="teacher in courses_teachers">
+                      <th scope="row">{{teacher.first_name}} {{teacher.last_name}}</th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-3 border-bottom" id="features">
+      <div class="container px-5 my-5">
+        <div class="row gx-5">
+<!-- Remove Student -->
+          <div class="col-lg-3 col-xl-3">
+            <div class="text-center mb-5">
+              <h2 class="fw-bolder">Remove Student</h2>
+            </div>
+            <form ame="removeStudent" @submit.prevent="removeStudent">
+              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeStudentID">
+                <option value="" disabled selected>Select Student</option>
+                <option id="theStudent" v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
+              </select>
+              <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="removeStudent($event)" value="Submit">Remove</button></div>
+            </form>
+          </div>
+<!-- Remove Teacher -->
+          <div class="col-lg-3 col-xl-3">
+              <div class="text-center mb-5">
+                <h2 class="fw-bolder">Remove Teacher</h2>
+              </div>
+              <form name="removeTeacher" @submit.prevent="removeTeacher">
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeTeacherID">
+                  <option value="" disabled selected>Select Teacher</option>
+                  <option id="theTeacher" v-for="teacher in teachers" :value="teacher.id">{{teacher.first_name}} {{teacher.last_name}}</option>
+                </select>
+                <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit" v-on:click="removeTeacher($event)" value="Submit">Remove</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-3 col-xl-3">
+              <div class="text-center mb-5">
+                <h2 class="fw-bolder">Upload CSV</h2>
+              </div>
+              <form name="uploadFile" @submit.prevent="uploadFile">
+                <div class="form-group">
+                  <input ref="file" v-on:change="handleFileUpload($event)" type="file" accept="csv/*">
+                </div>
+                <br>
+                <button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="submitFile($event)">Submit</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -268,19 +266,6 @@ export default {
     },
 
   data: function() {
-    // licenseKey: 'a78e94bf-cdd5-417a-aa12-4f3f5c6aed0e';
-    // settings: {
-    //   type: 'test import';
-    //   fields: [
-    //     { label: 'Student ID', key: 'student_id' },
-    //     { label: 'Course ID', key: 'course_id' },
-    //     { label: 'Grade', key: 'grade' },
-    //   ]
-    // };
-
-    // customer: {
-    //   userId: '12345',
-    // }
 
     return {
       courses: [],
@@ -472,14 +457,14 @@ export default {
     submitFile: function () {
       let formData = new FormData();
       formData.append('file', this.file);
-      axios.post( '/api/students/import', formData,
+      axios.post('/api/students/import', formData,
         {
           headers: {
               'Content-Type': 'multipart/form-data'
           }
         }
       ).then(function(){
-        console.log('SUCCESS!!');
+        console.log('SUCCESS!!', this.file);
       })
       .catch(function(){
         console.log('FAILURE!!');
