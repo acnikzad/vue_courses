@@ -100,8 +100,21 @@
               </div>
               <div class="col-lg-4 mb-5 mb-lg-0 large text-uppercase fw-bold text-muted">
                 <div class="text-center mb-5">
-                  <h4 class="fw-bolder">Select Student for Assigned Classes</h4>
+                  <h4 class="fw-bolder">Search Student for Assigned Classes</h4>
                 </div>
+                <!-- <div class="input-group"> -->
+                 <!--  <div id="search-autocomplete" class="form-outline">
+                    <input type="search" id="form1" class="form-control" />
+                    <label class="form-label" for="form1">Search</label>
+                  </div>
+                  <button type="button" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                  </button> -->
+              <!--   </div>
+                <input id="students" name="students" type="text" list="titles" placeholder="Search for Student..." @change="selectStudent($event)">
+                <datalist class="" aria-label=".form-select-lg example">
+                  <option v-for="student in students" :value="student">{{student.first_name}} {{student.last_name}}</option>
+                </datalist> -->
                 <select id="students" @change="selectStudent($event)" name="students" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                   <option value="" disabled selected>Select Student</option>
                   <option v-for="student in students" :value="student.id">{{student.first_name}} {{student.last_name}}</option>
@@ -119,7 +132,7 @@
             </div>
           </div>
           <div class="row gx-5 justify-content-center">
-            <div class="col-lg-3 col-xl-3">
+            <div class="col-lg-2 col-xl-2">
               <div class="card mb-5 mb-xl-0">
                 <div class="card-body p-5">
                   <table class="table">
@@ -137,13 +150,31 @@
                 </div>
               </div>
             </div>
-          <div class="col-lg-3 col-xl-3">
+          <div class="col-lg-2 col-xl-2">
             <div class="card mb-5 mb-xl-0">
               <div class="card-body p-5">
                 <table class="table">
                   <thead>
                     <tr>
                       <th scope="col">Grades</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="student in students_grades">
+                      <th scope="row">{{student.letter_grade}}</th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-xl-2">
+            <div class="card mb-5 mb-xl-0">
+              <div class="card-body p-5">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Percentage</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -202,6 +233,7 @@
             <div class="text-center mb-5">
               <h2 class="fw-bolder">Remove Student</h2>
             </div>
+            <br>
             <form ame="removeStudent" @submit.prevent="removeStudent">
               <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeStudentID">
                 <option value="" disabled selected>Select Student</option>
@@ -215,6 +247,7 @@
               <div class="text-center mb-5">
                 <h2 class="fw-bolder">Remove Teacher</h2>
               </div>
+              <br>
               <form name="removeTeacher" @submit.prevent="removeTeacher">
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" v-model="removeTeacherID">
                   <option value="" disabled selected>Select Teacher</option>
@@ -224,17 +257,28 @@
               </div>
             </form>
           </div>
+<!-- Uploader -->
           <div class="col-lg-3 col-xl-3">
-              <div class="text-center mb-5">
-                <h2 class="fw-bolder">Upload CSV</h2>
+            <div class="text-center mb-5">
+              <h2 class="fw-bolder">Upload Grades</h2>
+            </div>
+            <form name="uploadFile" @submit.prevent="uploadFile">
+              <div class="form-group">
+                <input ref="file" v-on:change="handleFileUploadGrade($event)" type="file" accept="csv/*">
               </div>
-              <form name="uploadFile" @submit.prevent="uploadFile">
-                <div class="form-group">
-                  <input ref="file" v-on:change="handleFileUpload($event)" type="file" accept="csv/*">
-                </div>
-                <br>
-                <button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="submitFile($event)">Submit</button>
-              </form>
+              <br>
+              <button class="btn btn-primary btn-lg" id="submitButton" type="submit" value="Submit" v-on:click="submitFile($event)">Submit</button>
+            </form>
+          </div>
+<!-- search for student -->
+          <div class="col-lg-3 col-xl-3">
+            <div class="text-center mb-5">
+              <h2 class="fw-bolder">Search for Students</h2>
+            </div>
+            <input type="text" v-model="searchTerm" list="titles">
+            <datalist id="titles">
+              <option v-for="student in students">{{student.first_name}} {{student.last_name}}</option>
+            </datalist>
           </div>
         </div>
       </div>
@@ -247,7 +291,7 @@
 import axios from "axios";
 import FlatfileButton from "@flatfile/vuejs";
 import { VueCsvImport } from "vue-csv-import";
-import { ref} from "vue";
+import { ref } from "vue";
 
 export default {
   name:'Add',
@@ -337,7 +381,7 @@ export default {
     },
 
     selectStudent: function(theStudent) {
-      console.log('selecting the student...', theStudent.target.value);
+      console.log('selecting the student...', theStudent.target.id);
       if (theStudent.target.value) {
         const id = parseInt(theStudent.target.value, 10);
         axios.get(`/api/students/${id}`).then(response => {
@@ -352,7 +396,6 @@ export default {
               this.students_courses = response.data.courses;
               this.students_grades = response.data.student_courses;
               console.log("this is the grades", this.students_grades)
-
             }
             if (response.data.students && response.data.students.length) {
               this.courses_students = response.data.students;
@@ -448,11 +491,17 @@ export default {
       })
     },
 
-    handleFileUpload: function() {
+    handleFileUploadGrade: function() {
       event.preventDefault();
       this.file = this.$refs.file.files[0];
       console.log("this is the file I am uploading", this.file)
     },
+
+    // handleFileUploadStudents: function() {
+    //   event.preventDefault();
+    //   this.file = this.$refs.file.files[0];
+    //   console.log("this is the file I am uploading", this.file)
+    // },
 
     submitFile: function () {
       let formData = new FormData();
@@ -469,7 +518,6 @@ export default {
       .catch(function(){
         console.log('FAILURE!!');
       });
-
     }
   }
 }
